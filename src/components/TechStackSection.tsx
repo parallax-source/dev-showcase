@@ -1,8 +1,9 @@
 import AnimatedSection from "./AnimatedSection";
+import { useLang } from "@/i18n/LangContext";
 
 interface Tech {
   name: string;
-  level: number; // 0-100
+  level: number;
   category: string;
 }
 
@@ -23,43 +24,40 @@ const techs: Tech[] = [
 
 const categories = ["Frontend", "Backend", "DevOps", "Design"];
 
-const TechStackSection = () => (
-  <section id="stack" className="section-padding bg-surface/50">
-    <div className="container mx-auto max-w-5xl">
-      <AnimatedSection>
-        <h2 className="text-3xl md:text-4xl font-heading font-bold mb-2">
-          Stack <span className="text-gradient">Tecnológica</span>
-        </h2>
-        <p className="text-muted-foreground mb-12">Tecnologias que uso no dia a dia para construir produtos incríveis.</p>
-      </AnimatedSection>
-
-      <div className="grid md:grid-cols-2 gap-10">
-        {categories.map((cat, ci) => (
-          <AnimatedSection key={cat} delay={ci * 0.1}>
-            <h3 className="font-heading font-semibold text-sm text-primary mb-4 uppercase tracking-wider">{cat}</h3>
-            <div className="space-y-4">
-              {techs
-                .filter((t) => t.category === cat)
-                .map((t) => (
-                  <div key={t.name}>
+const TechStackSection = () => {
+  const { t } = useLang();
+  return (
+    <section id="stack" className="section-padding bg-surface/50">
+      <div className="container mx-auto max-w-5xl">
+        <AnimatedSection>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-2">
+            {t.stack.title} <span className="text-gradient">{t.stack.highlight}</span>
+          </h2>
+          <p className="text-muted-foreground mb-12">{t.stack.description}</p>
+        </AnimatedSection>
+        <div className="grid md:grid-cols-2 gap-10">
+          {categories.map((cat, ci) => (
+            <AnimatedSection key={cat} delay={ci * 0.1}>
+              <h3 className="font-heading font-semibold text-sm text-primary mb-4 uppercase tracking-wider">{cat}</h3>
+              <div className="space-y-4">
+                {techs.filter((t) => t.category === cat).map((tech) => (
+                  <div key={tech.name}>
                     <div className="flex justify-between mb-1.5">
-                      <span className="text-sm font-medium">{t.name}</span>
-                      <span className="text-xs text-muted-foreground">{t.level}%</span>
+                      <span className="text-sm font-medium">{tech.name}</span>
+                      <span className="text-xs text-muted-foreground">{tech.level}%</span>
                     </div>
                     <div className="h-2 rounded-full bg-muted overflow-hidden">
-                      <div
-                        className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all duration-1000 ease-out"
-                        style={{ width: `${t.level}%` }}
-                      />
+                      <div className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all duration-1000 ease-out" style={{ width: `${tech.level}%` }} />
                     </div>
                   </div>
                 ))}
-            </div>
-          </AnimatedSection>
-        ))}
+              </div>
+            </AnimatedSection>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default TechStackSection;
